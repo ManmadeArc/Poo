@@ -122,7 +122,7 @@ class Juego():
             Cantidad_apuesta=int(input("Introduzca la cantidad a apostar:"))
         except:
             Cantidad_apuesta=50
-        if (self.Jugador1.Dinero< Cantidad_apuesta):
+        if (self.Jugador1.Dinero< Cantidad_apuesta or Cantidad_apuesta<50):
             Cantidad_apuesta=50
         else: 
             Cantidad_apuesta=Cantidad_apuesta
@@ -224,18 +224,20 @@ class Juego():
     def Comprobar_Split(self, i):
         if i.Obtener_Valor(0)==i.Obtener_Valor(1) and self.Ronda==0:
             x=input("Desea hacer split\n [1]Si\n[Cualquier otra Tecla]No\nIntroduza su respuesta: ")
-            return x=="1"
             os.system("cls")
             self.Imprimir_Manos(i)
+            return x=="1"
+            
         else:
             return False
     
     def Comprobar_Seguro(self,i):
         if self.Dealer.Manos[0].Obtener_Valor(0)=="A" and len(self.Dealer.Manos[0].Cartas)==2 and self.Ronda==0:
             z=input("La primera Carta del Dealer es un AS\n[1]Comprar Seguro\n[Cualquie otra cosa]No Comprar Seguro\nIntroduzca la accion a realizar: ")
-            return z=="1"
             os.system("cls")
             self.Imprimir_Manos(i)
+            return z=="1"
+            
         else:
             return False
 
@@ -287,7 +289,7 @@ class Juego():
                 print("Su dinero ahora es:", self.Jugador1.Dinero)
                 input("Presione Cualquier Tecla Para Continuar: ")
                 
-            elif (self.Dealer.Manos[0].Obtener_Sumatoria_pts()==21 and len(self.Dealer.Manos[0].Cartas)==2) and (self.Jugador1.Manos[self.Mano_Act].Obtener_Sumatoria_pts()==21 and len(self.Jugador1.Manos[self.Mano_Act].Cartas)==2):
+            elif (self.Dealer.Manos[0].Obtener_Sumatoria_pts()==21 and len(self.Dealer.Manos[0].Cartas)==2) and (self.Jugador1.Manos[self.Mano_Act].Obtener_Sumatoria_pts()==21 and len(self.Jugador1.Manos[self.Mano_Act].Cartas)==2) or self.Jugador1.Manos[self.Mano_Act].Obtener_Sumatoria_pts==self.Dealer.Manos[0].Obtener_Sumatoria_pts():
                 self.Imprimir_Mano_JGana()
                 print("Tenemos un EMPATE")
                 self.Jugador1.Dinero+=self.Jugador1.Apuesta[self.Mano_Act]
@@ -315,14 +317,15 @@ class Juego():
 
     def BucleJuego(self):
         x=False    
-        while not self.Finalizado and not self.Ronda>3:
+        while not self.Finalizado:
 
             for i in self.Jugador1.Manos:
                
-                if self.Dealer.Manos[0].Obtener_Sumatoria_pts()<17 and self.Ronda>0:
+                self.Imprimir_Manos(i)
+                while self.Dealer.Manos[0].Obtener_Sumatoria_pts()<17:
                     self.Pedir_otra_Carta(0,True)
 
-                self.Imprimir_Manos(i)
+                
 
                 if not self.Jugador1.plantarse[self.Mano_Act]:
                     if self.Comprobar_Split(i):
