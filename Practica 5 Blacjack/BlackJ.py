@@ -296,7 +296,10 @@ class Juego():
                 print("Su dinero ahora es: ",self.Jugador1.Dinero)
                 input("Presione Cualquier Tecla Para Continuar: ")
             elif self.Jugador1.Manos[self.Mano_Act].Obtener_Sumatoria_pts()>21 or self.Jugador1.Manos[self.Mano_Act].Obtener_Sumatoria_pts()<self.Dealer.Manos[0].Obtener_Sumatoria_pts():
-                self.Imprimir_Mano_CasaGana()
+                if self.Dealer.Manos[0].Obtener_Sumatoria_pts()>21:
+                    self.Imprimir_Mano_CasaGana()
+                else:
+                    self.Imprimir_Mano_JGana()
                 print("HAS PERDIDO")
                 print("Su dinero ahora es: ",self.Jugador1.Dinero)
                 input("Presione Cualquier Tecla Para Continuar: ")
