@@ -20,14 +20,16 @@ class Character:
 
     def Take_Damage(self, Damage, Type):
         if Type == 1:
-            self.Health -= (Damage-self.Physical_Resistance)
+            self.Health -= int(Damage - (Damage * (self.Physical_Resistance
+                                                   / 10)))
 
         elif Type == 2:
-            self.Health -= (Damage-self.Magic_Resistance)
+            self.Health -= int(Damage - (Damage * (self.Magic_Resistance
+                                                   / 10)))
 
         else:
-            self.Health -= int(Damage*(self.Magic_Resistance +
-                                       self.Physical_Resistance)/25)
+            self.Health -= int(Damage - Damage * (self.Magic_Resistance +
+                                                  self.Physical_Resistance/25))
 
     def Show_Health(self):
         print("Health Points:", self.Health)
@@ -44,7 +46,7 @@ class Assassin:
     def Add_Especial(self):
         self.Energy += 1
 
-    def Special_Attack(self, Physic):
+    def Special_Attack(self, Physic, Magic):
         if self.Energy >= 3:
             Damage = Physic * 3
             self.Energy -= 3
@@ -67,7 +69,7 @@ class Wizard:
     def Add_Especial(self):
         self.Mana += 1
 
-    def Special_Attack(self, Magic):
+    def Special_Attack(self, Physic, Magic):
         if self.Mana >= 3:
             Damage = Magic * 3
             self.Mana -= 3
@@ -90,7 +92,7 @@ class Berserker:
     def Add_Especial(self):
         self.Fury += 1
 
-    def Special_Attack(self, Magic, Physic):
+    def Special_Attack(self, Physic, Magic):
         if self.Fury >= 3:
             Damage = int(2.5 * (Magic+Physic))
         elif self.Fury >= 1:
@@ -105,40 +107,70 @@ class Berserker:
 
 class Elf (Character, Wizard):
     def __init__(self):
-        Character.__init__(self, 20, 0, 4, 2, 3, 2)
+        Character.__init__(self, 15, 0, 4, 2, 3, 1)
         Wizard.__init__(self, 1)
 
     def Show(self):
         print_Wizard()
 
+    def Show_Special_Stadistic(self):
+        print ("Mana:", self.Mana)
+        print("Especial Attack Uses Mana")
+        print("0 Mana =  0 Damage")
+        print("2 or 1 Mana =  Medium Damage")
+        print(" 3 Mana or more = Maximum Damage")
+
+    def Attack(self):
+        return self.Magic_Damage, 2
+
     def Special_Abilitie(self):
         if self.is_Heal():
             self.Health += random.randint(1, 3)
+            input("Elf has healed himself")
 
 
 class Undead(Character, Assassin):
     def __init__(self):
-        Character.__init__(self, 15, 4, 0, 2, 1, 3)
+        Character.__init__(self, 10, 5, 0, 2, 1, 2)
         Assassin.__init__(self, 3)
 
     def Show(self):
         print_skull()
     
+    def Show_Special_Stadistic(self):
+        print("Energy:", self.Energy)
+        print("Especial Attack Uses Energy")
+        print("0 Energy =  0 Damage")
+        print("2 or 1 Energy =  Medium Damage")
+        print(" 3 energy or more = Maimum Damage")
+
     def Special_Abilitie(self):
         if self.is_Critical():
-            self.Damage += random.randint(1, 2)
+            self.Physical_Damage += random.randint(1, 2)
+            input("Pyhisical Damage UP")
 
 
 class Dragon(Character, Berserker):
     def __init__(self):
-        Character.__init__(self, 30, 2, 3, 1, 1, 0)
+        Character.__init__(self, 25, 2, 3, 1, 1, 0)
         Berserker.__init__(self, 2)
 
     def Show(self):
         print_Doragon()
-    
+
+    def Show_Special_Stadistic(self):
+        print("Fury:", self.Fury)
+        print("Especial Attack Uses Fury")
+        print("0 Fury =  0 Damage")
+        print("2 or 1 Fury =  Medium Damage")
+        print(" 3 Fury or more = Maimum Damage")
+
+    def Attack(self):
+        Damage = self.Magic_Damage + self.Physical_Damage
+        return Damage, 3
+
     def Special_Abilitie(self):
         if self.is_Resistance():
             self.Magic_Resistance += 1
             self.Physical_Resistance += 1
-
+            input("Dragon Resistances Up")
