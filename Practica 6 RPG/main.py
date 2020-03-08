@@ -124,7 +124,8 @@ def Battle_Bucle():
         if Player1.Health <= 0:
             print("THE WINNER IS PLAYER 2")
         else:
-            print("THE WINNER IS PLAYER 3")
+            print("THE WINNER IS PLAYER 1")
+
 
 Create_Characters()
 Player1 = Select_Character()

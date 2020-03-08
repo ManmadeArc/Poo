@@ -114,11 +114,11 @@ class Elf (Character, Wizard):
         print_Wizard()
 
     def Show_Special_Stadistic(self):
-        print ("Mana:", self.Mana)
+        print("Mana:", self.Mana)
         print("Especial Attack Uses Mana")
         print("0 Mana =  0 Damage")
         print("2 or 1 Mana =  Medium Damage")
-        print(" 3 Mana or more = Maximum Damage")
+        print("3 Mana or more = Maximum Damage")
 
     def Attack(self):
         return self.Magic_Damage, 2
@@ -142,7 +142,7 @@ class Undead(Character, Assassin):
         print("Especial Attack Uses Energy")
         print("0 Energy =  0 Damage")
         print("2 or 1 Energy =  Medium Damage")
-        print(" 3 energy or more = Maimum Damage")
+        print("3 energy or more = Maimum Damage")
 
     def Special_Abilitie(self):
         if self.is_Critical():
@@ -163,7 +163,7 @@ class Dragon(Character, Berserker):
         print("Especial Attack Uses Fury")
         print("0 Fury =  0 Damage")
         print("2 or 1 Fury =  Medium Damage")
-        print(" 3 Fury or more = Maimum Damage")
+        print("3 Fury or more = Maimum Damage")
 
     def Attack(self):
         Damage = self.Magic_Damage + self.Physical_Damage
