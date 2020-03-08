@@ -11,9 +11,13 @@ class Character:
         self.Physical_Resistance = Physical_Resistance
         self.Magic_Resistance = Magic_Resistance
         self.Dodge_Rate = Dodge_Rate
+        self.Name = ""
 
     def Attack(self):
         return self.Physical_Damage, 1
+
+    def Set_Name(self, Name):
+        self.Name = Name
 
     def Dodge(self):
         return random.randint(0, 5) <= self.Dodge_Rate
@@ -28,8 +32,9 @@ class Character:
                                                    / 10)))
 
         else:
-            self.Health -= int(Damage - Damage * (self.Magic_Resistance +
-                                                  self.Physical_Resistance/25))
+            self.Health -= abs(int(Damage - (Damage *
+                                             (self.Magic_Resistance +
+                                              self.Physical_Resistance)/25)))
 
     def Show_Health(self):
         print("Health Points:", self.Health)
@@ -81,7 +86,7 @@ class Wizard:
         return Damage, 2
 
     def is_Heal(self):
-        return random.randint(0, 5) <= self.Heal_Rate
+        return random.randint(0, 6) <= self.Heal_Rate
 
 
 class Berserker:
@@ -95,8 +100,10 @@ class Berserker:
     def Special_Attack(self, Physic, Magic):
         if self.Fury >= 3:
             Damage = int(2.5 * (Magic+Physic))
+            self.Fury -= 3
         elif self.Fury >= 1:
             Damage = int(1.5 * (Magic+Physic))
+            self.Fury = 0
         else:
             Damage = 0
         return Damage, 3
@@ -125,8 +132,10 @@ class Elf (Character, Wizard):
 
     def Special_Abilitie(self):
         if self.is_Heal():
-            self.Health += random.randint(1, 3)
-            input("Elf has healed himself")
+            x = random.randint(1, 3)
+            self.Health += x
+            print("Elf has healed himself", x, "points")
+            input("Press Anything to continue")
 
 
 class Undead(Character, Assassin):
@@ -136,7 +145,7 @@ class Undead(Character, Assassin):
 
     def Show(self):
         print_skull()
-    
+
     def Show_Special_Stadistic(self):
         print("Energy:", self.Energy)
         print("Especial Attack Uses Energy")
@@ -152,7 +161,7 @@ class Undead(Character, Assassin):
 
 class Dragon(Character, Berserker):
     def __init__(self):
-        Character.__init__(self, 25, 2, 3, 1, 1, 0)
+        Character.__init__(self, 30, 2, 3, 1, 1, 0)
         Berserker.__init__(self, 2)
 
     def Show(self):
