@@ -15,9 +15,11 @@ class Usuario():
 
     def _First_Voc_And_Letter_App_P(self):
         VOC = "AEIOU"
+        x = 0
         for i in self.Apellido_P:
-            if i.upper() in VOC:
+            if i.upper() in VOC and x != 0:
                 return str(self.Apellido_P[0] + i)
+            x += 1
 
     def _First_Letter_App_M(self):
         return self.Apellido_M[0]
@@ -33,12 +35,15 @@ class Usuario():
 
     def _get_State(self):
         abreviaciones = {}
-        with open("Practica 7\claves_estados.txt", "r",) as f:
+        with open("claves_estados.txt", "r",) as f:
             for linea in f.readlines():
                 modo = linea.strip().split("\t")
                 abreviacin = modo[-1]
                 abreviaciones[modo[0]] = abreviacin
-        return abreviaciones[self.Estado.upper()]
+        try:
+            return abreviaciones[self.Estado.upper()]
+        except:
+            return "NE"
 
     def _get_C_intern_App_P(self):
         x = 0
@@ -53,25 +58,25 @@ class Usuario():
         VOC = "AEIOU"
         for i in self.Apellido_M:
             x += 1
-            if i not in VOC and x != 1:
+            if i.upper() not in VOC and x != 1:
                 return i
 
     def _get_C_intern_Name(self):
         x = 0
-        VOC = ["A"]
+        VOC = "AEIOU"
         for i in self.Nombre:
             x += 1
             if i.upper() not in VOC and x != 1:
                 return i
 
     def _get_Year_DIGIT(self):
-        if self.Año <= 1999:
+        if int(self.Año) <= 1999:
             return random.randint(0, 9)
         else:
             return random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
     def _get_Year(self):
-        return str(self.Año)[-1] + str(self.Año)[-2]
+        return str(self.Año)[-2] + str(self.Año)[-1]
 
     def _get_DIA(self):
         return str(self.Dia)
@@ -97,10 +102,10 @@ class Usuario():
         Curp += self._get_C_intern_Name().upper()
         Curp += str(self._get_Year_DIGIT()).upper()
         Curp += self._get_random_D().upper()
-        return Curp
+        return Curp.upper()
     
     def Save_User(self):
-        with open("Practica 7/Usuarios.txt", "a",) as f:
+        with open("Usuarios.txt", "a") as f:
             f.write(str(self.Nombre.upper() + "\t\t"
                         + self.Apellido_P.upper() + "\t\t"
                         + self.Apellido_M.upper() + "\t\t"
@@ -109,10 +114,4 @@ class Usuario():
                         + "\\"+str(self.Año) + "\t\t"
                         + self.Estado.upper() + "\t\t" +
                         self.GetCurp()+"\n"))
-
-
-X = Usuario(22, 11, 2000, "Marcos", "Moroyoqui", "Olan", True, "Baja California")
-
-print(X.GetCurp())
-
-X.Save_User()
+        
